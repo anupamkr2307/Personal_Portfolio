@@ -184,3 +184,4 @@ Log into `/admin/login` using the seeded credentials:
 - **LinkedIn**: https://www.linkedin.com/in/anupam-kumar-7305a8280
 - **Email**: anupamkr2307@gmail.com
 - **Phone**: 9142090166
+- **Live Link** : https://personal-portfolio-anupamkr2307.vercel.app/
