@@ -1,0 +1,173 @@
+// Prisma Schema for Anupam Kumar Full-Stack Portfolio (SQLite for zero-config local dev)
+// For PostgreSQL production deployment (Neon/Supabase/Render), see schema.postgresql.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String   @default("Anupam Kumar")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Profile {
+  id                   String   @id @default(uuid())
+  name                 String   @default("Anupam Kumar")
+  title                String   @default("Web Developer | AI/ML Learner | Database Learner")
+  headline             String   @default("Building Modern Web Applications & Intelligent Systems")
+  bio                  String   @default("I build modern web applications, full-stack systems and intelligent solutions while continuously exploring AI/ML and scalable databases.")
+  about                String   @default("I am a passionate software developer with strong foundations in full-stack web development, machine learning algorithms, and database management. Eager to create scalable software solutions and solve complex algorithmic problems.")
+  profileImage         String?
+  resumeUrl            String?
+  email                String   @default("anupamkr2307@gmail.com")
+  githubUrl            String   @default("https://github.com/anupamkr2307")
+  linkedinUrl          String   @default("https://www.linkedin.com/in/anupam-kumar-7305a8280")
+  dsaSolved            Int      @default(200)
+  projectsCount        Int      @default(4)
+  hackathonAchievement String   @default("Top-5 Position in IgNITion Tech Fest Hackathon 2025")
+  totalTechnologies    Int      @default(15)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model Project {
+  id               String   @id @default(uuid())
+  title            String
+  slug             String   @unique
+  description      String
+  longDescription  String?
+  problemStatement String?
+  solution         String?
+  architecture     String?
+  challenges       String?
+  results          String?
+  image            String
+  gallery          String   @default("[]") // JSON string of image URLs
+  technologies     String   @default("[]") // JSON string of tech strings
+  githubUrl        String?
+  liveUrl          String?
+  featured         Boolean  @default(false)
+  category         String   @default("Full-Stack")
+  displayOrder     Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([slug])
+  @@index([featured])
+}
+
+model Skill {
+  id           String   @id @default(uuid())
+  name         String
+  category     String   // Programming, Frontend, Backend, AI/ML, Databases, Tools
+  proficiency  Int      @default(80) // 1 to 100 percentage
+  icon         String?
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([category])
+}
+
+model Experience {
+  id           String   @id @default(uuid())
+  role         String
+  company      String
+  location     String?
+  startDate    String
+  endDate      String   @default("Present")
+  current      Boolean  @default(false)
+  description  String
+  bulletPoints String   @default("[]") // JSON string of bullet points
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Education {
+  id           String   @id @default(uuid())
+  degree       String
+  institution  String
+  fieldOfStudy String?
+  startYear    String
+  endYear      String   @default("Present")
+  current      Boolean  @default(false)
+  coursework   String   @default("[]") // JSON string
+  achievements String   @default("[]") // JSON string
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Achievement {
+  id           String   @id @default(uuid())
+  title        String
+  subtitle     String?
+  description  String
+  icon         String   @default("Trophy")
+  date         String?
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SocialLink {
+  id           String   @id @default(uuid())
+  platform     String   // GitHub, LinkedIn, Email, Twitter, CodeChef, LeetCode
+  url          String
+  icon         String   // Lucide icon identifier
+  active       Boolean  @default(true)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  isRead    Boolean  @default(false)
+  isReplied Boolean  @default(false)
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isRead])
+}
+
+model Visitor {
+  id         String     @id @default(uuid())
+  ipHash     String     @unique
+  userAgent  String?
+  deviceType String     @default("desktop")
+  browser    String     @default("Unknown")
+  country    String     @default("Unknown")
+  visitCount Int        @default(1)
+  lastVisit  DateTime   @default(now())
+  createdAt  DateTime   @default(now())
+  pageViews  PageView[]
+}
+
+model PageView {
+  id        String   @id @default(uuid())
+  path      String
+  visitorId String
+  visitor   Visitor  @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+  referrer  String?
+  createdAt DateTime @default(now())
+
+  @@index([path])
+  @@index([createdAt])
+}

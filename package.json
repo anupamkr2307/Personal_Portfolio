@@ -1,0 +1,20 @@
+{
+  "name": "anupam-portfolio-monorepo",
+  "version": "1.0.0",
+  "description": "Full-Stack Dynamic Developer Portfolio for Anupam Kumar",
+  "private": true,
+  "scripts": {
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "build:client": "cd client && npm run build",
+    "prisma:generate": "cd server && npx prisma generate",
+    "prisma:migrate": "cd server && npx prisma migrate dev",
+    "prisma:seed": "cd server && node prisma/seed.js",
+    "start": "cd server && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.4"
+  }
+}
